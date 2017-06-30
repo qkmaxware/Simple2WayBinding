@@ -1,0 +1,55 @@
+<html>
+
+	<input type='text' id='fname'>
+	<input type='text' id='lname'>
+	<div> 
+	<div id='title'></div>
+	<div id='result'></div>
+	<div id='result1'></div>
+	<div id='result2'></div>
+	</div>
+
+<script src='Binding.js'></script>
+<script>
+// The bindable scope object works just like a normal JS object
+// except we can bind properties of it to HTML DOM elements
+// ----------------------------------------------------------
+// var scope = new BindableScope(function(scope){ 
+// 		scope.name = 'test';
+// });
+// ----------------------------------------------------------
+// is equivalent to 
+// ----------------------------------------------------------
+// var scope = new BindableScope();
+// scope.name = 'test';
+// ----------------------------------------------------------
+// With this, any changes made to the bindable scope object will
+// automatically cause any bound dom elements to change their contents.
+// Also, any bound DOM elements when changed (input nodes) will propagate
+// those changes back to the bindable scope.
+
+//Create the new bindable scope and assign it a few values
+var scope = new BindableScope(function(scope){
+	scope.firstName = "Joe";
+	scope.lastName = "Smythe";
+	scope.getFullName = function(){
+		return scope.firstName + " " + scope.lastName;
+	};
+});
+
+//Bind several dom elements to scope properties and functional expressions
+scope.bind([
+	//Bind a DOM element to a property with the given name
+	{property: 'firstName', el: document.getElementById('fname')},
+	{property: 'lastName', el: document.getElementById('lname')},
+	//Bind a DOM element to the results of a functional expression 
+	{expression: scope.getFullName, el: document.getElementById('result')},
+	{expression: scope.getFullName, el: document.getElementById('result1')},
+	{expression: scope.getFullName, el: document.getElementById('result2')},
+	{expression: function(scope){ return 'Repeat 3x';}, el: document.getElementById('title')}
+]);
+
+</script>
+
+</html>
+
